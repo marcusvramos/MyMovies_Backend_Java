@@ -1,15 +1,15 @@
 package org.example.mymovies.entity;
 
-public class Filme {
+public class Movie {
     private String titulo;
     private int ano;
 
-    public Filme(String titulo, int ano) {
+    public Movie(String titulo, int ano) {
         this.titulo = titulo;
         this.ano = ano;
     }
 
-    public Filme() {
+    public Movie() {
         this("", 0);
     }
 
