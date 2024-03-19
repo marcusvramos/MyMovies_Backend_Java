@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/apis")
 public class MovieRestController {
     @Autowired
@@ -54,5 +56,19 @@ public class MovieRestController {
     public ResponseEntity<Object> addMovie(@RequestBody Movie movie) {
         movieRepository.addMovie(movie);
         return ResponseEntity.ok("Filme adicionado com sucesso!");
+    }
+
+    @GetMapping("/movies/search")
+    public ResponseEntity<Object> searchMoviesByTitle(@RequestParam("title") String title) {
+        List<Movie> movies = movieRepository.getFilmes();
+        List<Movie> foundMovies = movies.stream()
+                .filter(movie -> movie.getTitulo().toLowerCase().contains(title.toLowerCase()))
+                .collect(Collectors.toList());
+
+        if (!foundMovies.isEmpty()) {
+            return ResponseEntity.ok(foundMovies);
+        } else {
+            return ResponseEntity.badRequest().body("Nenhum filme encontrado com o título: " + title);
+        }
     }
 }
